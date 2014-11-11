@@ -1,0 +1,40 @@
+<head>
+  <title>Todo List</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Todos</h1>
+      <label class="hide-completed">
+  		<input type="checkbox" checked="{{hideCompleted}}" />
+  			Hide Completed Tasks
+		</label>
+    </header>
+
+    <div class="panel">
+    	<form class="new-task">
+	    	<input type="text" name="text" id="new_task_text" placeholder="Enter new task here..." />
+		</form>
+    </div>
+
+    <ul>
+      {{#each todos}}
+        {{> item}}
+      {{/each}}
+    </ul>
+  </div>
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</body>
+
+<template name="item">
+  <li class="{{#if checked}}checked{{/if}}"> 
+  	<button class="delete">&times;</button>
+  	<input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+  	<span class="text">{{text}}</span>
+
+  </li>
+</template>
+
+

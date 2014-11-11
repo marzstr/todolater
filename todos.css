@@ -1,0 +1,25 @@
+/* CSS declarations go here */
+.writing{
+	color: red;
+	font-family: Verdana;
+	font-size: 34px;
+}
+
+.heading{
+	color: blue;
+	font-family: Verdana;
+	font-size: 50px;
+}
+
+button{
+	width: 49%;
+	max-width: 500px;
+	background-color: green;
+	color: #fff;
+	font-size: 40px;
+}
+
+.wrapper{
+	border: 1px solid #222222;
+	
+}
