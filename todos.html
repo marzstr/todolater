@@ -1,40 +1,70 @@
 <head>
-  <title>Todo List</title>
+  <title>Today / Tomorrow</title>
 </head>
 
 <body>
   <div class="container">
-    <header>
-      <h1>Todos</h1>
-      <label class="hide-completed">
-  		<input type="checkbox" checked="{{hideCompleted}}" />
-  			Hide Completed Tasks
-		</label>
-    </header>
-
-    <div class="panel">
-    	<form class="new-task">
-	    	<input type="text" name="text" id="new_task_text" placeholder="Enter new task here..." />
-		</form>
+  	{{> navbar }}
+    
+    <div class="tasks-wrapper">
+     <ul class="tasks today">
+        {{#each todos}}
+          {{> item}}
+        {{/each}}
+      </ul>
+      <form class="new-task">
+          <input type="text" name="text" id="new_task_today" placeholder="Another thing to do today..." />
+      </form>
     </div>
-
-    <ul>
-      {{#each todos}}
-        {{> item}}
-      {{/each}}
-    </ul>
+    <div class="tasks-wrapper">
+      <ul class="tasks tomorrow">
+        {{#each todos}}
+          {{> item}}
+        {{/each}}
+      </ul>
+      <form class="new-task">
+          <input type="text" name="text" id="new_task_tomorrow" placeholder="Another thing to do tomorrow..." />
+      </form>
+    </div>
   </div>
-
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </body>
 
 <template name="item">
-  <li class="{{#if checked}}checked{{/if}}"> 
-  	<button class="delete">&times;</button>
-  	<input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+  <li class="item {{#if checked}}checked{{/if}}"> 
+    <a href="#" class="btn" aria-label="Right Align">
+      {{#if checked}}
+      <span class="glyphicon glyphicon-unchecked"></span>
+      {{ else }}
+      <span class="glyphicon glyphicon-ok"></span>
+      {{/if}}
+    </a>
   	<span class="text">{{text}}</span>
-
+    <a href="#" type="button" class="btn" aria-label="Right Align">
+      <span class="glyphicon glyphicon-trash"></span>
+    </a>
+    <a href="#" type="button" class="btn" aria-label="Right Align">
+      <span class="glyphicon glyphicon-share-alt"></span>
+    </a>
   </li>
+</template>
+
+<template name="navbar">
+  <nav class="navbar navbar-default">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+            <!-- make title dynamic -->
+            TODAY / TOMORROW
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Today / Tomorrow</a></li>
+            <li><a href="#">History</a></li>
+            <li><a href="#">Login</a></li>
+          </ul>
+        </li>
+      </ul>
+   </nav>
 </template>
 
 
