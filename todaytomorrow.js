@@ -5,6 +5,17 @@
 Todos = new Mongo.Collection('todos');
 
 
+// Get today's date
+function getTodayUtc(){
+  var now = new Date();
+  return Date.UTC(now.getFullYear(), now.getMonth(), now.getDay());
+}
+
+// get tomorrow's date
+function getTomorrowUtc(){
+  return getTodayUtc() + 86400000;
+}
+
 // =================================================
 // Frontend Client side functionality
 // =================================================
@@ -15,18 +26,30 @@ if (Meteor.isClient) {
   // helpers for diplaying the whole page
   Template.body.helpers({
 
-    todos:  function () {
+    todostoday:  function () {
+      var list = Todos.find(
+          { dateComplete: {$lte: getTodayUtc() } },
+          { sort: {dateCreate: -1} }
+        );
 
-      if(Session.get("hideCompleted")){
-        return Todos.find({checked: {$ne: true}}, {sort: {createdAt: -1}});
-      } else {
-        return Todos.find({}, {sort: { createdAt: -1 }});
-      }
-      
+      console.log(list);
+      return list;
     }, 
+
+    todostomorrow:  function () {
+      var list = Todos.find(
+          { dateComplete: {$gt: getTodayUtc() } },
+          { sort: {dateCreate: -1} }
+        );
+
+      console.log(list);
+      return list;
+    }, 
+
     hideCompleted: function (){
       return Session.get("hideCompleted");
     }, 
+
     incompleteCount:function () {
       return Todos.find({checked: {$ne: true}}).count();
     }, 
@@ -37,44 +60,42 @@ if (Meteor.isClient) {
   Template.body.events({
 
     // Event: add new task to list
-    'submit .new-task': function (event){
+    'submit .today': function (event){
 
       //var text = event.target.text.value;
       var text = $('#new_task_today').val();
       console.log(text);
 
-      Meteor.call("addItem", text);
+      Meteor.call("addItem", text, getTodayUtc());
 
       //event.target.text.value = "";
-      $('#new_task_text').val('');
+      $('#new_task_today').val('');
 
       return false; // must return false to prevent default form submmit
     }, 
 
-    'change .hide-completed input': function (event) {
-      Session.set("hideCompleted", event.target.checked);
-    },
-
-    'submit .new-task': function (event){
+    // create a new task for tomorrow list
+    'submit .tomorrow': function (event){
 
       //var text = event.target.text.value;
       var text = $('#new_task_tomorrow').val();
       console.log(text);
 
-      Meteor.call("addItem", text);
+      Meteor.call("addItem", text, getTomorrowUtc());
 
       //event.target.text.value = "";
-      $('#new_task_text').val('');
+      $('#new_task_tomorrow').val('');
 
       return false; // must return false to prevent default form submmit
     }
+
   });
 
   // event listeners for individual events
   Template.item.events({
     // Event: complete task
     'click .toggle-checked': function () {
-      Meteor.call("setChecked", this._id, !this.checked);
+      Meteor.call("setCompleted", this._id, !this.isCompleted);
     },
 
     'click .delete': function (){
@@ -82,9 +103,14 @@ if (Meteor.isClient) {
       Meteor.call("removeItem", this._id);
     }, 
 
-    'click .toggle-private': function () {
-      Meteor.call("setPrivate", this._id,  ! this.private);
+    'click .move-today': function () {
+      Meteor.call("moveDays", this._id, getTomorrowUtc() );
+    }, 
+
+    'click .move-tomorrow': function () {
+      Meteor.call("moveDays", this._id, getTodayUtc() );
     }
+
   });
 
   // templatting helpers for displaying items
@@ -92,6 +118,15 @@ if (Meteor.isClient) {
     isOwner: function () {
       return true;
       //return this.owner === Meteor.userId();
+    }, 
+
+    listName: function() {
+      if (this.dateComplete <= getTodayUtc()) {
+        return 'today';
+      }
+      else {
+        return 'tomorrow';
+      }
     }
   });
 
@@ -107,11 +142,11 @@ if (Meteor.isClient) {
 if(Meteor.isServer){
   Meteor.publish('todos', function () {
     return Todos.find({
-      $or: [
-        {private: {$ne: true}}
-        // ,
-        // {owner: this.userId }
-      ]
+      // $or: [
+      //   {private: {$ne: true}}
+      //   // ,
+      //   // {owner: this.userId }
+      // ]
     });
   });
 }
@@ -120,23 +155,25 @@ if(Meteor.isServer){
 // Data Layer Methods - update items in db
 // =================================================
 Meteor.methods({
-  addItem: function (text) {
+  addItem: function (text, completeDate) {
     // if(!Meteor.userId()){
     //   throw new Meteor.Error("not-authorized");
     // }
 
     Todos.insert({
-        text: text,
-        createdAt: new Date(),
-        active: true
+        text: text,   // text that shows to the user
+        dateCreate: new Date(), // allows for ordering and sorting 
+        active: true,   // removes task from list ie. "deletes"
+        dateComplete: completeDate,     // sets tast as crossed out
+        isCompleted: false     // action done by the user 
+
         // owner: Meteor.userId(),
         // username: Meteor.user().username
       });
   }, 
 
   removeItem: function (itemId){
-    var item = Todos.findOne(taskId);
-    console.log(item);
+    var item = Todos.findOne(itemId);
     // Validation check
     // if(item.private && item.owner !== Meteor.userId()){
     //   throw new Meteor.Error('not-authorized');
@@ -145,26 +182,39 @@ Meteor.methods({
     Todos.remove(itemId);
   }, 
 
-  setChecked: function (itemId, setChecked){
-    var item = Todos.findOne(taskId);
+  setActive: function (itemId, isActive){
+    var item = Todos.findOne(itemId);
     
     // Validation check
     // if(item.private && item.owner !== Meteor.userId()){
     //   throw new Meteor.Error('not-authorized');
     // }
 
-    Todos.update(itemId, {$set: {checked: setChecked }});
+    Todos.update(itemId, {$set: {active: isActive }});
   }, 
 
-  setPrivate: function (itemId, setToPrivate){
+  setCompleted: function (itemId, setCompleted){
     var item = Todos.findOne(itemId);
-
-    // if(task.owner !== Meteor.userId()){
+    
+    // Validation check
+    // if(item.private && item.owner !== Meteor.userId()){
     //   throw new Meteor.Error('not-authorized');
-    // } 
+    // }
 
-    Todos.update(itemId, { $set: { private: setToPrivate }});
+    Todos.update(itemId, {$set: {isCompleted: setCompleted }});
+  }, 
+
+  moveDays: function (itemId, dayToMove){
+    var item = Todos.findOne(itemId);
+    
+    // Validation check
+    // if(item.private && item.owner !== Meteor.userId()){
+    //   throw new Meteor.Error('not-authorized');
+    // }
+
+    Todos.update(itemId, {$set: {dateComplete: dayToMove }});
   }
+  
 });
 
 
