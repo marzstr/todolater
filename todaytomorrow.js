@@ -32,7 +32,7 @@ if (Meteor.isClient) {
           { sort: {dateCreate: -1} }
         );
 
-      console.log(list);
+      //console.log(list);
       return list;
     }, 
 
@@ -42,7 +42,7 @@ if (Meteor.isClient) {
           { sort: {dateCreate: -1} }
         );
 
-      console.log(list);
+      //console.log(list);
       return list;
     }, 
 
