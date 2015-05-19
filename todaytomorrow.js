@@ -94,7 +94,7 @@ if (Meteor.isClient) {
   // event listeners for individual events
   Template.item.events({
     // Event: complete task
-    'click .toggle-checked': function () {
+    'click .complete': function () {
       Meteor.call("setCompleted", this._id, !this.isCompleted);
     },
 
@@ -127,6 +127,10 @@ if (Meteor.isClient) {
       else {
         return 'tomorrow';
       }
+    },
+
+    completed: function(){
+      return this.isCompleted;
     }
   });
 
