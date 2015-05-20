@@ -4,20 +4,36 @@
 
 .tasks-wrapper {
 	box-sizing: border-box;
-	max-width: 50%;
+	width: 40%;
+	margin: 2%;
+	min-height: 50px;
 	
 	ul {
 		list-style-type: none;	
 		padding: 0px;
-		margin: 0px;
+		margin: 0;
+
+		.right {
+			float: right;
+		}
+
+		.text.completed{
+			text-decoration: line-through;
+		}
 	}
 }
 
-li {
 
-	}
 
 
 .delete {
 
+}
+
+span.move-today{
+	content:"\e128";
+}
+
+span.move-tomorrow{
+	content:"\e127";
 }

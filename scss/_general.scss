@@ -12,11 +12,19 @@ body {
   padding: 0;
   margin: 0;
 
-  font-size: 14px;
+  font-size: 1.2em;
+}
+
+input{
+	box-sizing: border-box;
+	height: 120%;
+	padding: 1% 2%;
+	width: 100%;
 }
 
 .navbar{
 	border-radius: 0;
+	padding: 0 2%;
 
 	.navbar-nav > li > a {
 		color: #fff;
@@ -38,7 +46,7 @@ body {
 }
 
 
-.container {
+.container-fluid {
 	background-color: #fff;
 	padding: 0;
 }
