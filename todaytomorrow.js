@@ -57,11 +57,13 @@ if (Meteor.isClient) {
     }, 
 
     dateToday: function () {
-      return new Date(getTodayUtc()).toDateString();
+      return new Date().toDateString();
     },
 
     dateTomorrow: function() {
-      return new Date(getTomorrowUtc()).toDateString();
+      var now = new Date();
+      var tomorrow = now.getTime() + 86400000;
+      return new Date(tomorrow).toDateString();
     } 
 
   });
