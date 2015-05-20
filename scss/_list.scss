@@ -4,25 +4,33 @@
 
 .tasks-wrapper {
 	box-sizing: border-box;
-	max-width: 50%;
+	width: 40%;
+	margin: 2%;
+	min-height: 50px;
 	
 	ul {
 		list-style-type: none;	
 		padding: 0px;
-		margin: 0px;
+		margin: 0;
+
+		.right {
+			float: right;
+		}
+
+		.text.completed{
+			text-decoration: line-through;
+		}
 	}
 }
 
-li {
 
-	}
 
 
 .delete {
 
 }
 
-.glyphicon.move-today{
+span.move-today{
 	content:"\e128";
 }
 

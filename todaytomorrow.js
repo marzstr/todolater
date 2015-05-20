@@ -1,6 +1,12 @@
 // Today / Tomorrow plugin
 // author: mstrnal 2015
 
+Router.route('/', function () {
+  // this.render('Home', {
+  //   data: function () { return null; }
+  // });
+});
+
 // establish db collection of items
 Todos = new Mongo.Collection('todos');
 
@@ -29,7 +35,7 @@ if (Meteor.isClient) {
     todostoday:  function () {
       var list = Todos.find(
           { dateComplete: {$lte: getTodayUtc() } },
-          { sort: {dateCreate: -1} }
+          { sort: {dateCreate: 1} }
         );
 
       //console.log(list);
@@ -39,7 +45,7 @@ if (Meteor.isClient) {
     todostomorrow:  function () {
       var list = Todos.find(
           { dateComplete: {$gt: getTodayUtc() } },
-          { sort: {dateCreate: -1} }
+          { sort: {dateCreate: 1} }
         );
 
       //console.log(list);
@@ -50,10 +56,14 @@ if (Meteor.isClient) {
       return Session.get("hideCompleted");
     }, 
 
-    incompleteCount:function () {
-      return Todos.find({checked: {$ne: true}}).count();
-    }, 
-      
+    dateToday: function () {
+      return new Date(getTodayUtc()).toDateString();
+    },
+
+    dateTomorrow: function() {
+      return new Date(getTomorrowUtc()).toDateString();
+    } 
+
   });
 
   // event listenters for the entire page
@@ -190,7 +200,7 @@ Meteor.methods({
     var item = Todos.findOne(itemId);
     
     // Validation check
-    // if(item.private && item.owner !== Meteor.userId()){
+    // if(item.owner !== Meteor.userId()){
     //   throw new Meteor.Error('not-authorized');
     // }
 
@@ -201,7 +211,7 @@ Meteor.methods({
     var item = Todos.findOne(itemId);
     
     // Validation check
-    // if(item.private && item.owner !== Meteor.userId()){
+    // if(item.owner !== Meteor.userId()){
     //   throw new Meteor.Error('not-authorized');
     // }
 
@@ -212,7 +222,7 @@ Meteor.methods({
     var item = Todos.findOne(itemId);
     
     // Validation check
-    // if(item.private && item.owner !== Meteor.userId()){
+    // if(item.owner !== Meteor.userId()){
     //   throw new Meteor.Error('not-authorized');
     // }
 

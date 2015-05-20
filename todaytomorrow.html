@@ -3,10 +3,11 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container-fluid">
   	{{> navbar }}
     
     <div class="tasks-wrapper">
+      <h3>{{dateToday}}</h3>
      <ul class="tasks">
         {{#each todostoday}}
           {{> item}}
@@ -17,6 +18,7 @@
       </form>
     </div>
     <div class="tasks-wrapper">
+      <h3>{{dateTomorrow}}</h3>
       <ul class="tasks">
         {{#each todostomorrow}}
           {{> item}}
@@ -38,15 +40,15 @@
         <span class="glyphicon glyphicon-unchecked"></span>
       {{/if}}
     </a>
-  	<span class="text">{{text}}</span>
+  	<span class="text {{#if completed}}completed{{/if}}">{{text}}</span>
+    <a href="#" type="button" class="btn right move-{{listName}}" aria-label="Left Align">
+      <span class="glyphicon glyphicon-hand-right"></span>
+    </a>
     {{#unless completed}}
-      <a href="#" type="button" class="btn delete" aria-label="Right Align">
+      <a href="#" type="button" class="btn right delete" aria-label="Right Align">
         <span class="glyphicon glyphicon-trash"></span>
       </a>
     {{/unless}}
-    <a href="#" type="button" class="btn move-{{listName}}" aria-label="Left Align">
-      <span class="glyphicon glyphicon-hand-left"></span>
-    </a>
   </li>
 </template>
 
