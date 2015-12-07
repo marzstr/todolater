@@ -13,3 +13,14 @@
 //     padding-bottom: 5px;
 //   }
 // }
+
+@media only screen and (max-width: 480px){
+	.additional-link-container, .login-button{
+		width: 96%;
+		max-width: 100% !important;
+	}
+	
+	.half-width{
+		width: 80%;
+	}
+}

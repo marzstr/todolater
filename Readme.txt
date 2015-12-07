@@ -23,13 +23,28 @@ __________________________________________________
 
 Included files in project: 
 
-- todos.html
-- todos.js
-- todos.css (compiled from todos.scss)
+- todaytomorrow.html
+- todaytomorrow.js
+- todaytomorrow.css (compiled from todaytomorrow.scss)
 
 
 ____________________________________________________
 
-Prototype deplayed to : https://todolater.meteor.com
+Prototype deployed to : https://todolater.meteor.com
+
+
+Vesion 1 
+===================
+
+Functionality:
+----------------
+- add item to 'today' list
+- remove item from list
+- 'complete' item in list
+- view items in 'today' list
+- view items in 'tomorrow' list
+- move item from one list to another
+- display only one user's list
+
 
 

@@ -1,7 +1,21 @@
+// VARIABLES
+$main-color: #003471;
+$error-color: #e60000;
+$background-color: #ededed;
+$button-color: #003471;
+$text-color: #000;
+$container-color: #fff;
+
+
+$font-family: Verdana, Geneva, sans-serif;
+$font-small: 0.8em;
+$font-medium: 1.2em;
+$font-header: 1.5em;
+
 // GENERAL 
 body {
-  font-family: Verdana, Geneva, sans-serif;
-  background-color: #ededed;
+  font-family: $font-family;
+  background-color: $background-color;
 
   position: absolute;
   top: 0;
@@ -12,7 +26,7 @@ body {
   padding: 0;
   margin: 0;
 
-  font-size: 1.2em;
+  font-size: $font-medium;
 }
 
 input{
@@ -28,16 +42,16 @@ input{
 
 	.navbar-nav > li > a {
 		color: #fff;
-		font-size: 1.5em;
+		font-size: $font-header;
 
 		&:hover, &:focus {
-			color: #ededed;
+			color: $background-color;
 		}
 	}
 	
 
 	&.navbar-default{
-		background-color: #003471;
+		background-color: $main-color;
 	}
 
 	.dropdown-menu{
@@ -45,8 +59,36 @@ input{
 	}
 }
 
+a:hover{
+	text-decoration: none;
+}
 
 .container-fluid {
-	background-color: #fff;
+	background-color: $container-color;
 	padding: 0;
+}
+
+.half-width {
+	width: 50%;
+	min-width: 300px;
+}
+
+.center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.button{
+	max-width: 200px;
+	height: 30px;
+	text-decoration: none;
+	float: right;
+	margin: 10px 5px 10px 0;
+	padding: 6px 10px;
+	text-transform: uppercase;
+	
+	a{
+		padding: 1%;
+		@extend .center;
+	}
 }

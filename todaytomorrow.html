@@ -3,11 +3,31 @@
 </head>
 
 <body>
+  {{#if currentUser}}
+    {{> main}}
+  {{else}}
+    {{> login}}
+  {{/if}}
+</body>
+
+<template name="login">
+  {{show}}
   <div class="container-fluid">
-  	{{> navbar }}
+    {{> navbar }}
+    <div class="half-width center">
+      {{> loginButtons}} 
+      
+    </div>
+  </div>
+</template>
+
+<template name="main">
+  <div class="container-fluid">
+    {{> navbar }}
     
     <div class="tasks-wrapper">
-      <h3>{{dateToday}}</h3>
+     <h3>{{dateToday}}</h3>
+     <!--{{test}}-->
      <ul class="tasks">
         {{#each todostoday}}
           {{> item}}
@@ -29,7 +49,7 @@
       </form>
     </div>
   </div>
-</body>
+</template>
 
 <template name="item">
   <li class="item {{#if completed}}completed{{/if}}"> 
@@ -42,7 +62,7 @@
     </a>
   	<span class="text {{#if completed}}completed{{/if}}">{{text}}</span>
     <a href="#" type="button" class="btn right move-{{listName}}" aria-label="Left Align">
-      <span class="glyphicon glyphicon-hand-right"></span>
+      <span class="glyphicon glyphicon-hand-right move-{{listName}}"></span>
     </a>
     {{#unless completed}}
       <a href="#" type="button" class="btn right delete" aria-label="Right Align">
@@ -61,13 +81,20 @@
             <!-- make title dynamic -->
             TODAY / TOMORROW
           </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Today / Tomorrow</a></li>
-            <li><a href="#">History</a></li>
-            <li><a href="#">Login</a></li>
-          </ul>
+          {{#if currentUser}}
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="/today">Today / Tomorrow</a></li>
+              <li><a href="/history">History</a></li>
+              <li><a href="#" class="logout">Logout</a></li>
+            </ul>
+          {{/if}}
+          
+          
         </li>
       </ul>
+      <!--{{#if currentUser}}
+            {{> loginButtons}}
+          {{/if}}-->
    </nav>
 </template>
 

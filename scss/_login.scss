@@ -1,0 +1,36 @@
+#login-buttons{
+	.additional-link-container{
+		@extend .button;
+		background-color: $background-color;
+		
+		a{
+			color: $text-color;
+			@extend .center;
+		}
+	}
+	
+	.login-button{
+		@extend .button;
+		background-color: $main-color;
+		color: $container-color;
+		
+		a{
+			@extend .center;
+		}
+		
+	}
+	
+	.login-close-text, .login-link-text, div > #forgot-password-link{
+		display: none;
+	}
+	
+	.message{
+		&.error-message{
+			color:$error-color;
+		}
+	}
+	
+	label{
+		margin: 10px 0 3px;
+	}
+}

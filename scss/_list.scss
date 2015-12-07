@@ -4,8 +4,8 @@
 
 .tasks-wrapper {
 	box-sizing: border-box;
-	width: 40%;
-	margin: 2%;
+	width: 96%;
+	margin: 2% 0 2% 2%;
 	min-height: 50px;
 	
 	ul {
@@ -31,7 +31,9 @@
 }
 
 span.move-today{
-	content:"\e128";
+	// @extend .glyphicon;
+	// @extend .glyphicon-hand-right;
+	// content:"\e128";
 }
 
 span.move-tomorrow{
